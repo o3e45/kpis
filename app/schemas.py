@@ -34,10 +34,7 @@ class PurchaseOrder(BaseModel):
     description: Optional[str]
     vendor: Vendor
     media_object: MediaObject
-codex/implement-first-prototype-of-empire-system-42szbu
     created_at: datetime
-
-main
 
     class Config:
         orm_mode = True
@@ -76,11 +73,8 @@ class SearchResult(BaseModel):
     media_object_id: int
     score: float = Field(..., ge=0)
     excerpt: str
-codex/implement-first-prototype-of-empire-system-42szbu
     filename: Optional[str] = None
     mime: Optional[str] = None
-
- main
 
 
 class SuggestionApprovalResponse(BaseModel):

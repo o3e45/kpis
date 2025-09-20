@@ -23,17 +23,26 @@ class IngestService:
         self.session = session
         self.parser = PurchaseParser()
 
-    def ingest_purchase(self, llc: models.LLC, upload: UploadFile) -> Tuple[models.PurchaseOrder, list[models.Event], list[models.AgentSuggestion]]:
+    def ingest_purchase(
+        self,
+        llc: models.LLC,
+        upload: UploadFile,
+    ) -> Tuple[models.PurchaseOrder, list[models.Event], list[models.AgentSuggestion]]:
         raw_bytes = upload.file.read()
         text = raw_bytes.decode("utf-8", errors="ignore")
 
-        media = self._store_media(llc, upload.filename or "purchase.txt", raw_bytes, upload.content_type or "text/plain")
+        media = self._store_media(
+            llc,
+            upload.filename or "purchase.txt",
+            raw_bytes,
+            upload.content_type or "text/plain",
+        )
         parsed, confidence = self.parser.parse_text(text)
         vendor = self._get_or_create_vendor(parsed.vendor_name)
- codex/implement-first-prototype-of-empire-system-42szbu
-        status = parsed.payment_status or (parsed.status.lower().replace(" ", "-") if parsed.status else None)
+        status = parsed.payment_status or (
+            parsed.status.lower().replace(" ", "-") if parsed.status else None
+        )
 
- main
         purchase_order = models.PurchaseOrder(
             llc=llc,
             vendor=vendor,
@@ -42,19 +51,20 @@ class IngestService:
             currency=parsed.currency,
             due_date=parsed.due_date,
             description=parsed.description,
- codex/implement-first-prototype-of-empire-system-42szbu
             status=status or "pending",
- main
         )
         self.session.add(purchase_order)
 
         if parsed.asset_name:
-            asset = models.Asset(purchase_order=purchase_order, name=parsed.asset_name, status="pending")
+            asset = models.Asset(
+                purchase_order=purchase_order,
+                name=parsed.asset_name,
+                status="pending",
+            )
             self.session.add(asset)
 
-codex/implement-first-prototype-of-empire-system-42szbu
         self.session.flush()
-main
+
         events = self._create_events(
             media=media,
             llc=llc,
@@ -77,7 +87,13 @@ main
 
         return purchase_order, events, suggestions
 
-    def _store_media(self, llc: models.LLC, filename: str, raw_bytes: bytes, mime: str) -> models.MediaObject:
+    def _store_media(
+        self,
+        llc: models.LLC,
+        filename: str,
+        raw_bytes: bytes,
+        mime: str,
+    ) -> models.MediaObject:
         sha = hashlib.sha256(raw_bytes).hexdigest()
         storage_path = MEDIA_ROOT / f"{datetime.utcnow().timestamp()}_{filename}"
         storage_path.write_bytes(raw_bytes)
@@ -93,7 +109,11 @@ main
         return media
 
     def _get_or_create_vendor(self, name: str) -> models.Vendor:
-        vendor = self.session.query(models.Vendor).filter(models.Vendor.name == name).one_or_none()
+        vendor = (
+            self.session.query(models.Vendor)
+            .filter(models.Vendor.name == name)
+            .one_or_none()
+        )
         if vendor:
             return vendor
         vendor = models.Vendor(name=name)
@@ -129,7 +149,11 @@ main
 
 
 def list_events(session: Session, limit: int = 50) -> Iterable[models.Event]:
-    return session.query(models.Event).order_by(models.Event.created_at.desc()).limit(limit)
+    return (
+        session.query(models.Event)
+        .order_by(models.Event.created_at.desc())
+        .limit(limit)
+    )
 
 
 def search_documents(session: Session, query: str) -> list[tuple[models.MediaObject, float]]:

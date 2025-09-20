@@ -1,7 +1,6 @@
 """Simple heuristics-based parser for purchase orders."""
 from __future__ import annotations
 
-codex/implement-first-prototype-of-empire-system-42szbu
 import re
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -25,12 +24,6 @@ CURRENCY_CODES = {
     "aud": "AUD",
 }
 
-from datetime import datetime
-from typing import Any, Dict, Optional
-
-from pydantic import BaseModel
- main
-
 
 class ParsedPurchase(BaseModel):
     vendor_name: str
@@ -39,19 +32,16 @@ class ParsedPurchase(BaseModel):
     due_date: Optional[datetime] = None
     description: Optional[str] = None
     asset_name: Optional[str] = None
- codex/implement-first-prototype-of-empire-system-42szbu
     status: Optional[str] = None
     payment_status: Optional[str] = None
     reference: Optional[str] = None
     claim_links: List[str] = Field(default_factory=list)
- main
 
 
 class PurchaseParser:
     """Parse structured information from raw text invoices."""
 
     def parse_text(self, content: str) -> tuple[ParsedPurchase, float]:
- codex/implement-first-prototype-of-empire-system-42szbu
         normalized = content.replace("\r\n", "\n")
         raw_lines = [line.rstrip() for line in normalized.splitlines()]
         lines = [line.strip() for line in raw_lines if line.strip()]
@@ -59,6 +49,7 @@ class PurchaseParser:
         vendor_name = self._extract_value(lines, ["vendor", "vendor name", "supplier"], default="Unknown Vendor")
         reference = self._extract_value(lines, ["invoice", "reference", "po"], default=None)
         status = self._extract_value(lines, ["status", "payment status"], default=None)
+
         payment_status = None
         if status:
             lowered = status.lower()
@@ -77,23 +68,6 @@ class PurchaseParser:
         asset_name = self._extract_value(lines, ["item", "product", "asset", "service"], default=None)
         claim_links = self._extract_claim_links(content)
 
-        lines = [line.strip() for line in content.splitlines() if line.strip()]
-        vendor_name = self._extract_value(lines, ["vendor", "supplier"], default="Unknown Vendor")
-        total_amount = float(self._extract_value(lines, ["total", "amount"], default="0").replace("$", ""))
-        currency = "USD"
-        due_date_str = self._extract_value(lines, ["due", "pay by"], default="")
-        due_date = None
-        if due_date_str:
-            for fmt in ("%Y-%m-%d", "%m/%d/%Y", "%d %b %Y"):
-                try:
-                    due_date = datetime.strptime(due_date_str, fmt)
-                    break
-                except ValueError:
-                    continue
-        description = self._extract_value(lines, ["description", "notes"], default=None)
-        asset_name = self._extract_value(lines, ["item", "product", "asset"], default=None)
- main
-
         parsed = ParsedPurchase(
             vendor_name=vendor_name,
             total_amount=total_amount,
@@ -101,7 +75,6 @@ class PurchaseParser:
             due_date=due_date,
             description=description,
             asset_name=asset_name,
- codex/implement-first-prototype-of-empire-system-42szbu
             status=status,
             payment_status=payment_status,
             reference=reference,
@@ -109,30 +82,20 @@ class PurchaseParser:
         )
 
         confidence = self._calculate_confidence(parsed)
-
-        )
-        confidence = 0.7 if total_amount > 0 else 0.3
-main
         return parsed, confidence
 
     def _extract_value(self, lines: list[str], prefixes: list[str], default: Optional[str]) -> Optional[str]:
         for line in lines:
             lowered = line.lower()
             for prefix in prefixes:
- codex/implement-first-prototype-of-empire-system-42szbu
                 prefix_lower = prefix.lower()
                 if lowered.startswith(prefix_lower):
                     parts = re.split(r"[:\-]", line, maxsplit=1)
-
-                if lowered.startswith(prefix.lower()):
-                    parts = line.split(":", 1)
-main
                     if len(parts) == 2:
                         return parts[1].strip()
-                    return line[len(prefix) :].strip()
+                    return line[len(prefix):].strip()
         return default
 
-< codex/implement-first-prototype-of-empire-system-42szbu
     def _extract_amount(self, lines: list[str]) -> float:
         amount_candidates: list[float] = []
         amount_pattern = re.compile(r"(?i)(total|amount|balance due|grand total).*?(\d[\d,]*(?:\.\d{2})?)")
@@ -191,7 +154,7 @@ main
                     remainder = line.split(":", 1)
                     current = remainder[1].strip() if len(remainder) == 2 else ""
                     collected = [current] if current else []
-                    for follow in lines[index + 1 :]:
+                    for follow in lines[index + 1:]:
                         if not follow.strip():
                             break
                         if any(follow.lower().startswith(other.lower()) for other in prefixes):
@@ -204,8 +167,7 @@ main
 
     def _extract_claim_links(self, content: str) -> list[str]:
         links = re.findall(r"https?://\S+", content)
-        filtered = [link for link in links if re.search(r"claim|ticket|case", link, flags=re.IGNORECASE)]
-        return filtered
+        return [link for link in links if re.search(r"claim|ticket|case", link, flags=re.IGNORECASE)]
 
     def _calculate_confidence(self, parsed: ParsedPurchase) -> float:
         confidence = 0.4
@@ -221,7 +183,6 @@ main
             confidence += 0.05
         return min(confidence, 0.95)
 
-main
 
 def parser_event_payload(parsed: ParsedPurchase, confidence: float) -> Dict[str, Any]:
     return {
@@ -231,12 +192,9 @@ def parser_event_payload(parsed: ParsedPurchase, confidence: float) -> Dict[str,
         "due_date": parsed.due_date.isoformat() if parsed.due_date else None,
         "description": parsed.description,
         "asset_name": parsed.asset_name,
- codex/implement-first-prototype-of-empire-system-42szbu
         "status": parsed.status,
         "payment_status": parsed.payment_status,
         "reference": parsed.reference,
         "claim_links": parsed.claim_links,
-
- main
         "confidence": confidence,
     }
