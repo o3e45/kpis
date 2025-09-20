@@ -8,3 +8,4 @@ storage/
 *.egg-info/
 .pytest_cache/
 .env
+
