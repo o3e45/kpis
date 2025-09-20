@@ -34,6 +34,7 @@ class PurchaseOrder(BaseModel):
     description: Optional[str]
     vendor: Vendor
     media_object: MediaObject
+    created_at: datetime
 
     class Config:
         orm_mode = True
@@ -72,6 +73,8 @@ class SearchResult(BaseModel):
     media_object_id: int
     score: float = Field(..., ge=0)
     excerpt: str
+    filename: Optional[str] = None
+    mime: Optional[str] = None
 
 
 class SuggestionApprovalResponse(BaseModel):

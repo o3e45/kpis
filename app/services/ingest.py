@@ -30,6 +30,7 @@ class IngestService:
         media = self._store_media(llc, upload.filename or "purchase.txt", raw_bytes, upload.content_type or "text/plain")
         parsed, confidence = self.parser.parse_text(text)
         vendor = self._get_or_create_vendor(parsed.vendor_name)
+        status = parsed.payment_status or (parsed.status.lower().replace(" ", "-") if parsed.status else None)
         purchase_order = models.PurchaseOrder(
             llc=llc,
             vendor=vendor,
@@ -38,12 +39,15 @@ class IngestService:
             currency=parsed.currency,
             due_date=parsed.due_date,
             description=parsed.description,
+            status=status or "pending",
         )
         self.session.add(purchase_order)
 
         if parsed.asset_name:
             asset = models.Asset(purchase_order=purchase_order, name=parsed.asset_name, status="pending")
             self.session.add(asset)
+
+        self.session.flush()
 
         events = self._create_events(
             media=media,

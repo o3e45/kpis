@@ -1,42 +1,66 @@
 import React from 'react';
 
-const severityTone = {
-  high: {
-    label: 'High Impact',
+const typeTone = {
+  'flag-overdue': {
+    label: 'Overdue',
     className: 'status-chip warning'
   },
-  medium: {
-    label: 'Review Soon',
+  'create-repayment-plan': {
+    label: 'Plan',
     className: 'status-chip pending'
   },
-  low: {
-    label: 'Optional',
-    className: 'status-chip success'
+  'reconcile-payment-status': {
+    label: 'Status',
+    className: 'status-chip warning'
+  },
+  'review-vendor-history': {
+    label: 'Vendor History',
+    className: 'status-chip pending'
+  },
+  'review-related-claim': {
+    label: 'Claim Link',
+    className: 'status-chip warning'
   }
 };
 
-function SuggestionCard({ suggestion, onAction }) {
-  const tone = severityTone[suggestion.severity] ?? severityTone.medium;
+function SuggestionCard({ suggestion, onApprove, isApproving }) {
+  const tone = typeTone[suggestion.suggestion_type] ?? typeTone['review-vendor-history'];
+  const createdAt = suggestion.created_at
+    ? new Date(suggestion.created_at).toLocaleString([], {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    : '';
+  const approvedAt = suggestion.approved_at
+    ? new Date(suggestion.approved_at).toLocaleString([], {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    : '';
 
   return (
     <div className="suggestion-card">
       <header>
-        <h3>{suggestion.title}</h3>
+        <h3>{suggestion.message}</h3>
         <span className={tone.className}>{tone.label}</span>
       </header>
-      <p>{suggestion.description}</p>
-      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Proposed by {suggestion.owner}</div>
-      {suggestion.actionTaken ? (
-        <div className="status-chip success">
-          {suggestion.actionTaken} · {new Date(suggestion.actionAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </div>
+      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
+        {suggestion.agent_name} • {createdAt}
+      </div>
+      {suggestion.approved ? (
+        <div className="status-chip success">Approved {approvedAt}</div>
       ) : (
         <footer>
-          <button className="button primary" onClick={() => onAction(suggestion.id, 'approved')}>
-            Approve
-          </button>
-          <button className="button secondary" onClick={() => onAction(suggestion.id, 'snoozed')}>
-            Snooze
+          <button
+            className="button primary"
+            onClick={() => onApprove?.(suggestion.id)}
+            disabled={isApproving}
+          >
+            {isApproving ? 'Approving…' : 'Approve'}
           </button>
         </footer>
       )}
@@ -44,44 +68,35 @@ function SuggestionCard({ suggestion, onAction }) {
   );
 }
 
-export default function SuggestionBoard({ active, completed, onAction }) {
+export default function SuggestionBoard({ open, resolved, onApprove, approving = [], isLoading = false }) {
   return (
     <div>
       <h2>Agent Suggestions</h2>
       <div style={{ display: 'grid', gap: '16px' }}>
-        {active.length === 0 ? (
+        {open.map((suggestion) => (
+          <SuggestionCard
+            key={suggestion.id}
+            suggestion={suggestion}
+            onApprove={onApprove}
+            isApproving={approving.includes(suggestion.id)}
+          />
+        ))}
+        {!open.length && !isLoading && (
           <div className="document-card">
             <h4>No open actions</h4>
             <p style={{ color: 'var(--text-muted)', margin: 0 }}>
               Agents are monitoring your workstreams. You will be notified when a new opportunity appears.
             </p>
           </div>
-        ) : (
-          active.map((suggestion) => (
-            <SuggestionCard key={suggestion.id} suggestion={suggestion} onAction={onAction} />
-          ))
         )}
       </div>
 
-      {completed.length > 0 && (
+      {resolved.length > 0 && (
         <div style={{ marginTop: '24px' }}>
-          <h3 style={{ marginBottom: '12px' }}>Recently actioned</h3>
+          <h3 style={{ marginBottom: '12px' }}>Recently approved</h3>
           <div className="document-list">
-            {completed.map((suggestion) => (
-              <div key={suggestion.id} className="suggestion-card">
-                <header>
-                  <h3>{suggestion.title}</h3>
-                  <div className="status-chip success">{suggestion.actionTaken}</div>
-                </header>
-                <p>{suggestion.description}</p>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                  Handled at{' '}
-                  {new Date(suggestion.actionAt).toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
-                </div>
-              </div>
+            {resolved.map((suggestion) => (
+              <SuggestionCard key={suggestion.id} suggestion={suggestion} onApprove={onApprove} isApproving={false} />
             ))}
           </div>
         </div>

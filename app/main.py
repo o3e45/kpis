@@ -61,14 +61,27 @@ def create_app() -> FastAPI:
         payload: List[schemas.SearchResult] = []
         for media, score in results:
             excerpt = Path(media.storage_path).read_text(errors="ignore")[:160] if media.storage_path else ""
+            filename = Path(media.storage_path).name if media.storage_path else None
             payload.append(
                 schemas.SearchResult(
                     media_object_id=media.id,
                     score=score,
                     excerpt=excerpt,
+                    filename=filename,
+                    mime=media.mime,
                 )
             )
         return payload
+
+    @app.get("/agents/suggestions", response_model=List[schemas.AgentSuggestion])
+    def get_suggestions(limit: int = 50, db: Session = Depends(get_db)) -> List[schemas.AgentSuggestion]:
+        query = (
+            db.query(models.AgentSuggestion)
+            .order_by(models.AgentSuggestion.created_at.desc())
+        )
+        if limit:
+            query = query.limit(limit)
+        return query.all()
 
     @app.post("/agents/suggestions/{suggestion_id}/approve", response_model=schemas.SuggestionApprovalResponse)
     def approve_suggestion(
