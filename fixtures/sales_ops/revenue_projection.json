@@ -1,0 +1,80 @@
+{
+  "forecast_window": {
+    "start_at": "2024-09-01",
+    "end_at": "2024-12-31"
+  },
+  "projections": [
+    {
+      "rep_id": "rep_01",
+      "rep_name": "Taylor Brooks",
+      "weighted_pipeline_value": 168500,
+      "target_quota": 250000,
+      "attainment": 0.54,
+      "run_rate_projection": 0.88,
+      "stage_breakdown": [
+        {
+          "stage_id": "stage_qualification",
+          "weighted_value": 29750
+        },
+        {
+          "stage_id": "stage_discovery",
+          "weighted_value": 59400
+        },
+        {
+          "stage_id": "stage_proposal",
+          "weighted_value": 79250
+        }
+      ],
+      "scenario": "best_case",
+      "updated_at": "2024-09-20T21:30:00Z"
+    },
+    {
+      "rep_id": "rep_02",
+      "rep_name": "Jordan Singh",
+      "weighted_pipeline_value": 210600,
+      "target_quota": 260000,
+      "attainment": 0.62,
+      "run_rate_projection": 0.95,
+      "stage_breakdown": [
+        {
+          "stage_id": "stage_qualification",
+          "weighted_value": 48600
+        },
+        {
+          "stage_id": "stage_negotiation",
+          "weighted_value": 117000
+        },
+        {
+          "stage_id": "stage_closed_won",
+          "weighted_value": 45000
+        }
+      ],
+      "scenario": "commit",
+      "updated_at": "2024-09-20T21:32:00Z"
+    },
+    {
+      "rep_id": "rep_03",
+      "rep_name": "Morgan Patel",
+      "weighted_pipeline_value": 258700,
+      "target_quota": 275000,
+      "attainment": 0.74,
+      "run_rate_projection": 1.08,
+      "stage_breakdown": [
+        {
+          "stage_id": "stage_proposal",
+          "weighted_value": 116400
+        },
+        {
+          "stage_id": "stage_negotiation",
+          "weighted_value": 87300
+        },
+        {
+          "stage_id": "stage_closed_won",
+          "weighted_value": 55000
+        }
+      ],
+      "scenario": "stretch",
+      "updated_at": "2024-09-20T21:28:00Z"
+    }
+  ]
+}

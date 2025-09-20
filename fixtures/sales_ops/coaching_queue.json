@@ -1,0 +1,52 @@
+{
+  "reviews": [
+    {
+      "call_id": "call-9012",
+      "rep_id": "rep_01",
+      "rep_name": "Taylor Brooks",
+      "call_date": "2024-09-18T16:05:00Z",
+      "call_duration_minutes": 28,
+      "qa_score": 72,
+      "review_status": "pending",
+      "coach_id": "coach_01",
+      "coach_name": "Riley Chen",
+      "call_recording_url": "https://recordings.example.com/call-9012.mp3",
+      "transcript_url": "https://recordings.example.com/call-9012.vtt",
+      "focus_tags": ["discovery", "objection_handling"],
+      "webhook_event_id": "wh_call_qa_required",
+      "follow_up_due_at": "2024-09-22T23:59:00Z"
+    },
+    {
+      "call_id": "call-9018",
+      "rep_id": "rep_02",
+      "rep_name": "Jordan Singh",
+      "call_date": "2024-09-19T15:40:00Z",
+      "call_duration_minutes": 34,
+      "qa_score": 86,
+      "review_status": "in_review",
+      "coach_id": "coach_02",
+      "coach_name": "Jamie Alvarez",
+      "call_recording_url": "https://recordings.example.com/call-9018.mp3",
+      "transcript_url": "https://recordings.example.com/call-9018.vtt",
+      "focus_tags": ["pricing", "next_steps"],
+      "webhook_event_id": "wh_call_review_started",
+      "follow_up_due_at": "2024-09-23T18:00:00Z"
+    },
+    {
+      "call_id": "call-9021",
+      "rep_id": "rep_03",
+      "rep_name": "Morgan Patel",
+      "call_date": "2024-09-20T13:10:00Z",
+      "call_duration_minutes": 21,
+      "qa_score": 91,
+      "review_status": "completed",
+      "coach_id": "coach_01",
+      "coach_name": "Riley Chen",
+      "call_recording_url": "https://recordings.example.com/call-9021.mp3",
+      "transcript_url": "https://recordings.example.com/call-9021.vtt",
+      "focus_tags": ["value_messaging", "closing"],
+      "webhook_event_id": "wh_call_review_completed",
+      "follow_up_due_at": "2024-09-21T20:00:00Z"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "scripts": [
+    {
+      "script_id": "script_stage_qualification_connect",
+      "title": "Qualification Connect Script",
+      "supported_stages": ["stage_qualification"],
+      "channel": "phone",
+      "persona": "operations_director",
+      "script_body": "**Opening**\\nHi {{contact.first_name}}, this is {{user.first_name}} with Nimbus Analytics.\\n\\n**Value Statement**\\nWe help operations leaders reduce manual reporting by 40% through real-time dashboards.\\n\\n**Discovery Questions**\\n1. How are you currently consolidating performance metrics?\\n2. What triggers your team to investigate dips in output?\\n\\n**Next Step**\\nIf it makes sense, I can line up a discovery with one of our solution architects. Does Tuesday morning work?",
+      "dynamic_tokens": ["contact.first_name", "user.first_name"],
+      "compliance_notes": "Mention that all calls are recorded for quality and training purposes.",
+      "playbook_links": [
+        "https://intranet.example.com/playbooks/qualification",
+        "https://intranet.example.com/security-overview"
+      ],
+      "dialer_shortcuts": {
+        "ctrl+shift+d": "Drop pre-recorded voicemail",
+        "ctrl+enter": "Log connect disposition"
+      },
+      "last_reviewed_at": "2024-08-30T18:00:00Z"
+    },
+    {
+      "script_id": "script_stage_negotiation_value",
+      "title": "Negotiation Value Reinforcement",
+      "supported_stages": ["stage_negotiation", "stage_proposal"],
+      "channel": "phone",
+      "persona": "cfo",
+      "script_body": "**Reframe**\\n{{contact.first_name}}, I wanted to revisit the financial outcomes we modeled last week.\\n\\n**Value Proof**\\n- ${{deal.pipeline_savings}} annual reduction in manual reconciliation hours.\\n- ${{deal.error_cost_avoidance}} saved by alert-driven compliance workflows.\\n\\n**Ask**\\nAre there any procurement blockers we can resolve before your fiscal close on {{deal.fiscal_close_date}}?",
+      "dynamic_tokens": [
+        "contact.first_name",
+        "deal.pipeline_savings",
+        "deal.error_cost_avoidance",
+        "deal.fiscal_close_date"
+      ],
+      "compliance_notes": "Confirm NDA coverage before sharing detailed pricing.",
+      "playbook_links": [
+        "https://intranet.example.com/playbooks/negotiation"
+      ],
+      "dialer_shortcuts": {
+        "ctrl+shift+l": "Launch pricing calculator",
+        "ctrl+shift+w": "Open webhook-triggered win plan"
+      },
+      "last_reviewed_at": "2024-09-05T16:45:00Z"
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "pipeline_id": "enterprise_pipeline_q4",
+  "stages": [
+    {
+      "stage_id": "stage_qualification",
+      "stage_name": "Qualification",
+      "sequence": 1,
+      "deals": [
+        {
+          "deal_id": "D-1001",
+          "deal_name": "Acme Platform Rollout",
+          "account_name": "Acme Manufacturing",
+          "deal_value": 85000,
+          "currency": "USD",
+          "confidence": 0.35,
+          "close_date": "2024-11-15",
+          "rep_id": "rep_01",
+          "rep_name": "Taylor Brooks",
+          "owner_avatar_url": "https://cdn.example.com/avatars/taylor_brooks.png",
+          "last_activity_at": "2024-09-18T14:22:00Z",
+          "next_step": "Schedule technical discovery",
+          "tags": ["manufacturing", "expansion"],
+          "priority": "medium",
+          "webhook_subscription_ids": ["wh_kanban_move_acme"]
+        },
+        {
+          "deal_id": "D-1005",
+          "deal_name": "Northwind Data Alignment",
+          "account_name": "Northwind Analytics",
+          "deal_value": 54000,
+          "currency": "USD",
+          "confidence": 0.3,
+          "close_date": "2024-10-20",
+          "rep_id": "rep_02",
+          "rep_name": "Jordan Singh",
+          "owner_avatar_url": "https://cdn.example.com/avatars/jordan_singh.png",
+          "last_activity_at": "2024-09-19T09:40:00Z",
+          "next_step": "Send ROI calculator",
+          "tags": ["saas", "pilot"],
+          "priority": "high",
+          "webhook_subscription_ids": ["wh_kanban_move_northwind"]
+        }
+      ]
+    },
+    {
+      "stage_id": "stage_discovery",
+      "stage_name": "Discovery",
+      "sequence": 2,
+      "deals": [
+        {
+          "deal_id": "D-1003",
+          "deal_name": "Globex Workflow Automation",
+          "account_name": "Globex Corporation",
+          "deal_value": 132000,
+          "currency": "USD",
+          "confidence": 0.45,
+          "close_date": "2024-12-05",
+          "rep_id": "rep_01",
+          "rep_name": "Taylor Brooks",
+          "owner_avatar_url": "https://cdn.example.com/avatars/taylor_brooks.png",
+          "last_activity_at": "2024-09-17T17:55:00Z",
+          "next_step": "Deliver solution design",
+          "tags": ["enterprise", "workflow"],
+          "priority": "medium",
+          "webhook_subscription_ids": ["wh_kanban_move_globex"]
+        }
+      ]
+    },
+    {
+      "stage_id": "stage_proposal",
+      "stage_name": "Proposal",
+      "sequence": 3,
+      "deals": [
+        {
+          "deal_id": "D-1002",
+          "deal_name": "Initech Analytics Upgrade",
+          "account_name": "Initech",
+          "deal_value": 97000,
+          "currency": "USD",
+          "confidence": 0.6,
+          "close_date": "2024-10-30",
+          "rep_id": "rep_03",
+          "rep_name": "Morgan Patel",
+          "owner_avatar_url": "https://cdn.example.com/avatars/morgan_patel.png",
+          "last_activity_at": "2024-09-20T15:10:00Z",
+          "next_step": "Negotiate procurement terms",
+          "tags": ["renewal", "analytics"],
+          "priority": "high",
+          "webhook_subscription_ids": ["wh_kanban_move_initech"]
+        }
+      ]
+    },
+    {
+      "stage_id": "stage_negotiation",
+      "stage_name": "Negotiation",
+      "sequence": 4,
+      "deals": [
+        {
+          "deal_id": "D-1004",
+          "deal_name": "Wayne Enterprises Compliance",
+          "account_name": "Wayne Enterprises",
+          "deal_value": 156000,
+          "currency": "USD",
+          "confidence": 0.75,
+          "close_date": "2024-11-12",
+          "rep_id": "rep_02",
+          "rep_name": "Jordan Singh",
+          "owner_avatar_url": "https://cdn.example.com/avatars/jordan_singh.png",
+          "last_activity_at": "2024-09-18T19:20:00Z",
+          "next_step": "Finalize legal review",
+          "tags": ["security", "compliance"],
+          "priority": "urgent",
+          "webhook_subscription_ids": ["wh_kanban_move_wayne"]
+        }
+      ]
+    },
+    {
+      "stage_id": "stage_closed_won",
+      "stage_name": "Closed Won",
+      "sequence": 5,
+      "deals": [
+        {
+          "deal_id": "D-1006",
+          "deal_name": "Stark Industries Data Lake",
+          "account_name": "Stark Industries",
+          "deal_value": 210000,
+          "currency": "USD",
+          "confidence": 1.0,
+          "close_date": "2024-09-01",
+          "rep_id": "rep_03",
+          "rep_name": "Morgan Patel",
+          "owner_avatar_url": "https://cdn.example.com/avatars/morgan_patel.png",
+          "last_activity_at": "2024-09-01T12:00:00Z",
+          "next_step": "Kickoff implementation",
+          "tags": ["expansion", "strategic"],
+          "priority": "medium",
+          "webhook_subscription_ids": ["wh_kanban_move_stark"]
+        }
+      ]
+    }
+  ]
+}
