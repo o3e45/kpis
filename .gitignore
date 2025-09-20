@@ -8,5 +8,4 @@ storage/
 *.egg-info/
 .pytest_cache/
 .env
-node_modules/
-frontend/node_modules/
+
