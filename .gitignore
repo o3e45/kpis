@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+storage/
+.empire/
+*.egg-info/
+.pytest_cache/
+.env
+node_modules/
+frontend/node_modules/
