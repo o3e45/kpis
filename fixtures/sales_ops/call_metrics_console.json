@@ -1,0 +1,65 @@
+{
+  "reporting_window": {
+    "start_at": "2024-09-16T00:00:00Z",
+    "end_at": "2024-09-20T23:59:59Z"
+  },
+  "call_metrics": [
+    {
+      "rep_id": "rep_01",
+      "rep_name": "Taylor Brooks",
+      "call_volume": 145,
+      "connect_rate": 0.32,
+      "talk_time_minutes": 415,
+      "avg_handle_time": 6.3,
+      "voicemail_drop_rate": 0.18,
+      "dialer_session_count": 5,
+      "dialer_launch_url": "https://dialer.example.com/launch?rep=rep_01",
+      "dialer_provider": "orion_dialer",
+      "dialer_session_id": "dial-7a891",
+      "webhook_event_types": [
+        "dialer.call.connected",
+        "dialer.call.dispositioned",
+        "dialer.session.ended"
+      ],
+      "last_synced_at": "2024-09-20T22:15:00Z"
+    },
+    {
+      "rep_id": "rep_02",
+      "rep_name": "Jordan Singh",
+      "call_volume": 162,
+      "connect_rate": 0.36,
+      "talk_time_minutes": 502,
+      "avg_handle_time": 7.1,
+      "voicemail_drop_rate": 0.14,
+      "dialer_session_count": 7,
+      "dialer_launch_url": "https://dialer.example.com/launch?rep=rep_02",
+      "dialer_provider": "orion_dialer",
+      "dialer_session_id": "dial-7a997",
+      "webhook_event_types": [
+        "dialer.call.connected",
+        "dialer.call.voicemail_drop",
+        "dialer.session.ended"
+      ],
+      "last_synced_at": "2024-09-20T22:10:00Z"
+    },
+    {
+      "rep_id": "rep_03",
+      "rep_name": "Morgan Patel",
+      "call_volume": 98,
+      "connect_rate": 0.29,
+      "talk_time_minutes": 341,
+      "avg_handle_time": 6.9,
+      "voicemail_drop_rate": 0.22,
+      "dialer_session_count": 4,
+      "dialer_launch_url": "https://dialer.example.com/launch?rep=rep_03",
+      "dialer_provider": "orion_dialer",
+      "dialer_session_id": "dial-7a743",
+      "webhook_event_types": [
+        "dialer.call.connected",
+        "dialer.call.dispositioned",
+        "dialer.call.voicemail_drop"
+      ],
+      "last_synced_at": "2024-09-20T22:05:00Z"
+    }
+  ]
+}
