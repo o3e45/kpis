@@ -17,13 +17,21 @@ class FinanceAgent:
     def __init__(self, session: Session) -> None:
         self.session = session
 
-    def evaluate_purchase_order(self, purchase_order: models.PurchaseOrder) -> list[models.AgentSuggestion]:
+    def evaluate_purchase_order(
+        self, purchase_order: models.PurchaseOrder
+    ) -> list[models.AgentSuggestion]:
         suggestions: list[models.AgentSuggestion] = []
-        existing_types: Set[str] = {suggestion.suggestion_type for suggestion in purchase_order.suggestions}
+        existing_types: Set[str] = {
+            suggestion.suggestion_type for suggestion in purchase_order.suggestions
+        }
 
+        # Overdue payments
         if purchase_order.due_date:
             now = datetime.now(timezone.utc)
-            if purchase_order.due_date.replace(tzinfo=timezone.utc) < now and purchase_order.status != "paid":
+            if (
+                purchase_order.due_date.replace(tzinfo=timezone.utc) < now
+                and purchase_order.status != "paid"
+            ):
                 suggestions.extend(
                     self._ensure_suggestion(
                         purchase_order,
@@ -33,6 +41,7 @@ class FinanceAgent:
                     )
                 )
 
+        # Large purchase repayment plan
         if purchase_order.total_amount >= 10000:
             suggestions.extend(
                 self._ensure_suggestion(
@@ -43,6 +52,7 @@ class FinanceAgent:
                 )
             )
 
+        # Status reconciliation
         normalized_status = (purchase_order.status or "").lower()
         if normalized_status in {"overdue", "late", "past-due"}:
             suggestions.extend(
@@ -54,6 +64,7 @@ class FinanceAgent:
                 )
             )
 
+        # Vendor history review
         open_history = self._open_orders_for_vendor(purchase_order)
         if open_history >= 2:
             suggestions.extend(
@@ -61,13 +72,14 @@ class FinanceAgent:
                     purchase_order,
                     suggestion_type="review-vendor-history",
                     message=(
-                        f"{purchase_order.vendor.name} has {open_history} other open orders. Review payment cadence before "
-                        "approving new spend."
+                        f"{purchase_order.vendor.name} has {open_history} other open orders. "
+                        "Review payment cadence before approving new spend."
                     ),
                     existing_types=existing_types,
                 )
             )
 
+        # Related claim links
         claim_links = self._claim_links_from_media(purchase_order.media_object)
         if claim_links:
             first_link = claim_links[0]
@@ -142,4 +154,8 @@ class FinanceAgent:
             content = path.read_text(errors="ignore")
         except OSError:
             return []
-        return [link for link in re.findall(r"https?://\S+", content) if re.search(r"claim|ticket|case", link, re.IGNORECASE)]
+        return [
+            link
+            for link in re.findall(r"https?://\S+", content)
+            if re.search(r"claim|ticket|case", link, re.IGNORECASE)
+        ]

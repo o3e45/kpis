@@ -49,6 +49,7 @@ class PurchaseParser:
         vendor_name = self._extract_value(lines, ["vendor", "vendor name", "supplier"], default="Unknown Vendor")
         reference = self._extract_value(lines, ["invoice", "reference", "po"], default=None)
         status = self._extract_value(lines, ["status", "payment status"], default=None)
+
         payment_status = None
         if status:
             lowered = status.lower()
@@ -92,7 +93,7 @@ class PurchaseParser:
                     parts = re.split(r"[:\-]", line, maxsplit=1)
                     if len(parts) == 2:
                         return parts[1].strip()
-                    return line[len(prefix) :].strip()
+                    return line[len(prefix):].strip()
         return default
 
     def _extract_amount(self, lines: list[str]) -> float:
@@ -153,7 +154,7 @@ class PurchaseParser:
                     remainder = line.split(":", 1)
                     current = remainder[1].strip() if len(remainder) == 2 else ""
                     collected = [current] if current else []
-                    for follow in lines[index + 1 :]:
+                    for follow in lines[index + 1:]:
                         if not follow.strip():
                             break
                         if any(follow.lower().startswith(other.lower()) for other in prefixes):
@@ -166,8 +167,7 @@ class PurchaseParser:
 
     def _extract_claim_links(self, content: str) -> list[str]:
         links = re.findall(r"https?://\S+", content)
-        filtered = [link for link in links if re.search(r"claim|ticket|case", link, flags=re.IGNORECASE)]
-        return filtered
+        return [link for link in links if re.search(r"claim|ticket|case", link, flags=re.IGNORECASE)]
 
     def _calculate_confidence(self, parsed: ParsedPurchase) -> float:
         confidence = 0.4
